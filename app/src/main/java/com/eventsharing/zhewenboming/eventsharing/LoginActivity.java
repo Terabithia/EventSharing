@@ -72,6 +72,7 @@ public class LoginActivity extends Activity implements OnClickListener {
             case R.id.new_user_button:
                 startActivity(new Intent(this, AccountActivity.class));
                 break;
+            //
         }
     }
 
