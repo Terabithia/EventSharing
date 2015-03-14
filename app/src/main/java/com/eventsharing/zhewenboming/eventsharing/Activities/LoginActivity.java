@@ -1,15 +1,20 @@
-package com.eventsharing.zhewenboming.eventsharing;
-import java.util.List;
+package com.eventsharing.zhewenboming.eventsharing.Activities;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.util.Log;
+
+import com.eventsharing.zhewenboming.eventsharing.DatabaseHelper;
+import com.eventsharing.zhewenboming.eventsharing.R;
+
+import java.util.List;
 
 public class LoginActivity extends Activity implements OnClickListener {
     private DatabaseHelper dh;
@@ -79,8 +84,8 @@ public class LoginActivity extends Activity implements OnClickListener {
     private void loginClick() {
         String username = this.userNameEditableField.getText().toString();
         String password = this.passwordEditableField.getText().toString();
-        this.dh = new DatabaseHelper(this);
-        List<String> names = this.dh.selectAll(username, password);
+        this.dh = DatabaseHelper.getInstance(this);
+        List<String> names = this.dh.selectAllUsers(username, password);
         if (names.size() > 0) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
