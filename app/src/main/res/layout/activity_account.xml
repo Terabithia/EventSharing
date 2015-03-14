@@ -15,8 +15,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginBottom="15dip"
-            android:text="create_new_account"
-            android:textSize="20.5sp" />
+            android:text="Create New Account"
+            android:textSize="20.5sp"
+            android:id="@+id/create_new_account" />
 
         <TextView
             android:layout_width="wrap_content"
