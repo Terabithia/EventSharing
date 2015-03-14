@@ -1,4 +1,4 @@
-package com.eventsharing.zhewenboming.eventsharing;
+package com.eventsharing.zhewenboming.eventsharing.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.eventsharing.zhewenboming.eventsharing.DatabaseHelper;
+import com.eventsharing.zhewenboming.eventsharing.R;
 
 public class AccountActivity extends Activity implements OnClickListener {
     private EditText etUsername;
@@ -35,7 +38,7 @@ public class AccountActivity extends Activity implements OnClickListener {
         String confirm = etConfirm.getText().toString();
         if ((password.equals(confirm)) && (!username.equals(""))
                 && (!password.equals("")) && (!confirm.equals(""))) {
-            this.dh = new DatabaseHelper(this);
+            this.dh = DatabaseHelper.getInstance(this);
             this.dh.insert(username, password);
             Toast.makeText(AccountActivity.this, "new record inserted",
                     Toast.LENGTH_SHORT).show();
