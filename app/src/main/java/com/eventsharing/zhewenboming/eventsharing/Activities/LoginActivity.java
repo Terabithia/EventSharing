@@ -86,7 +86,7 @@ public class LoginActivity extends Activity implements OnClickListener {
         String username = this.userNameEditableField.getText().toString();
         String password = this.passwordEditableField.getText().toString();
         this.dh = DatabaseHelper.getInstance(this);
-        List<User> users = this.dh.selectAllUsers(username, password);
+        List<String> users = this.dh.selectAllUsers(username, password);
         if (users.size() > 0) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
