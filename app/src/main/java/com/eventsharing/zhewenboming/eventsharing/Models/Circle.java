@@ -9,7 +9,7 @@ import java.util.List;
 public class Circle {
     private String _name;
     private int id;
-    private List<User> users;
+    private List<Integer> users;
 
 
 
@@ -27,11 +27,11 @@ public class Circle {
         this.id = id;
     }
 
-    public List<User> getUsers() {
+    public List<Integer> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<Integer> users) {
         this.users = users;
     }
 

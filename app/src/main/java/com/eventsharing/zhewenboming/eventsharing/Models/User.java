@@ -11,8 +11,8 @@ public class User {
     private String _userName;
     private String _password;
     private int id;
-    private List<Circle> circles;
-    private List<User> friends;
+    private List<Integer> circles;
+    private List<Integer> friends;
 
     // getters and setters
     public User(String userName, String password){
@@ -47,21 +47,21 @@ public class User {
         this.id = id;
     }
 
-    public List<Circle> getCircle() {
+    public List<Integer> getCircle() {
         return circles;
     }
 
-    public void setCircle(List<Circle> circles) {
+    public void setCircle(List<Integer> circles) {
         //possible changes: call sql to change the data
         this.circles = circles;
     }
 
 
-    public List<User> getFriends() {
+    public List<Integer> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(List<Integer> friends) {
         this.friends = friends;
     }
 
