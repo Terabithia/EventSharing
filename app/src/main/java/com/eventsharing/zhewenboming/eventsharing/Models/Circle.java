@@ -9,6 +9,7 @@ import java.util.List;
 public class Circle {
     private String _name;
     private int id;
+    private int ownerId;
     private List<Integer> users;
 
 
@@ -41,6 +42,13 @@ public class Circle {
 
     public void set_name(String _name) {
         this._name = _name;
+    }
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 
     //additional methods
