@@ -39,7 +39,7 @@ public class AccountActivity extends Activity implements OnClickListener {
         if ((password.equals(confirm)) && (!username.equals(""))
                 && (!password.equals("")) && (!confirm.equals(""))) {
             this.dh = DatabaseHelper.getInstance(this);
-            this.dh.insert(username, password);
+            this.dh.insertUser(username, password);
             Toast.makeText(AccountActivity.this, "new record inserted",
                     Toast.LENGTH_SHORT).show();
             finish();
