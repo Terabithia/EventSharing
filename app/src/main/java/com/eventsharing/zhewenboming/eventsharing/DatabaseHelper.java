@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper {
-    private static DatabaseHelper instance;
     private static final String DATABASE_NAME = "EvenSharing.db";
 
 
@@ -23,18 +22,11 @@ public class DatabaseHelper {
 
 
 
-    private DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         this.context = context;
         EvenSharingOpenHelper openHelper = new EvenSharingOpenHelper(this.context);
         this.db = openHelper.getWritableDatabase();
-
     }
-
-    public static DatabaseHelper getInstance(Context context){
-        if(instance == null) instance = new DatabaseHelper(context);
-        return instance;
-    }
-
 
     /************************Method for user**********************/
     public long insertUser(String name, String password) {
