@@ -41,6 +41,11 @@ public class SQLStatements {
         allTables.add(EVENT_TABLE);
         allTables.add(COMMENTS_TABLE);
         allTables.add(USER_TABLE);
+        allTables.add(USER_CIRCLE_TABLE);
+        allTables.add(USER_EVENT_TABLE);
+        allTables.add(EVENT_COMMENT_TABLE);
+        allTables.add(FRIEND_TABLE);
+
         return allTables;
     }
  }
