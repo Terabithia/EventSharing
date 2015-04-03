@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper {
-    private static DatabaseHelper instance;
+
     private static final String DATABASE_NAME = "EvenSharing.db";
 
 
@@ -23,18 +23,12 @@ public class DatabaseHelper {
 
 
 
-    private DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         this.context = context;
         EvenSharingOpenHelper openHelper = new EvenSharingOpenHelper(this.context);
         this.db = openHelper.getWritableDatabase();
 
     }
-
-    public static DatabaseHelper getInstance(Context context){
-        if(instance == null) instance = new DatabaseHelper(context);
-        return instance;
-    }
-
 
     /************************Method for user**********************/
     public long insertUser(String name, String password) {
@@ -48,27 +42,12 @@ public class DatabaseHelper {
         this.db.delete(SQLStatements.USER_EVENT_TABLE,"userId = " + id, null);
         this.db.delete(SQLStatements.USER_TABLE,"id = " + id,null);
     }
-    public List<String> selectAllUsers(String username, String password) {
-        List<String> list = new ArrayList<String>();
-        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name", "password" }, "name = '"+ username +"' AND password= '"+ password+"'", null, null, null, "name desc");
-        if (cursor.moveToFirst()) {
-            do {
-                list.add(cursor.getString(0));
-                list.add(cursor.getString(1));
-            } while (cursor.moveToNext());
-        }
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
-        return list;
-    }
-    public List<User> getAllUser() {
+    public List<User> selectAllUsers(String username, String password) {
         List<User> list = new ArrayList<>();
-        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name", "password", "id" }, null, null, null, null, "name desc");
+        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name", "password", "id" }, "name = '"+ username +"' AND password= '"+ password+"'", null, null, null, "name desc");
         if (cursor.moveToFirst()) {
             do {
                 User user = new User(cursor.getString(0),cursor.getString(1));
-                user.setId(cursor.getInt(2));
                 user.setCircle(getCirclesByUserId(cursor.getInt(2)));
                 user.setFriends(getFriendsByUserId(cursor.getInt(2)));
                 list.add(user);
@@ -78,14 +57,6 @@ public class DatabaseHelper {
             cursor.close();
         }
         return list;
-    }
-    public User getUserById(int id){
-        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name","password" }, "id = "+ id , null, null, null, "name desc");
-        User user = new User(cursor.getString(0),cursor.getString(1));
-        user.setId(id);
-        user.setCircle(getCirclesByUserId(id));
-        user.setFriends(getFriendsByUserId(id));
-        return user;
     }
     //need implementation
     public List<Integer> getUsersByCircleId(int id){
@@ -123,10 +94,9 @@ public class DatabaseHelper {
         this.db.delete(SQLStatements.CIRCLE_TABLE,"ownerId = " + id,null);
     }
     public Circle getCircleById(int id){
-        Cursor cursor = this.db.query(SQLStatements.CIRCLE_TABLE, new String[] { "name","ownerId" }, "id = "+ id , null, null, null, "name desc");
+        Cursor cursor = this.db.query(SQLStatements.CIRCLE_TABLE, new String[] { "name" }, "id = "+ id , null, null, null, "name desc");
         Circle c = new Circle(cursor.getString(0));
         c.setId(id);
-        c.setOwnerId(cursor.getInt(1));
         c.setUsers(getUsersByCircleId(id));
         return c;
     }

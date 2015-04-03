@@ -29,25 +29,26 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     private void loadEventText() {
-        for(int i = 0; i< 100; i++) {
-            String userName = "user" + String.valueOf(i);
-            this.dh.insertUser(userName, "1");
-        }
-
-        //List<User> allUsers= this.dh.getAllUser();
-        //for (User u: allUsers) {
-        //    String userName = u.get_userName();
-        //    TextView tv = new TextView(HomeActivity.this);
-        //    tv.setText(userName);
-        //    eventLinearLayout.addView(tv);
-        //}
-
-        for(int i = 0; i< 100; i++) {
-            String s = "Event " + String.valueOf(i);
-            TextView tv = new TextView(HomeActivity.this);
-            tv.setText(s);
-            eventLinearLayout.addView(tv);
-        }
+//        this.dh = DatabaseHelper.getInstance(this);
+//        for(int i = 0; i< 100; i++) {
+//            String userName = "user" + String.valueOf(i);
+//            this.dh.insertUser(userName, "1");
+//        }
+//
+//        List<User> allUsers= this.dh.getAllUser();
+//        for (User u: allUsers) {
+//            String userName = u.get_userName();
+//            TextView tv = new TextView(HomeActivity.this);
+//            tv.setText(userName);
+//            eventLinearLayout.addView(tv);
+//        }
+//
+//        for(int i = 0; i< 100; i++) {
+//            String s = "Event " + String.valueOf(i);
+//            TextView tv = new TextView(HomeActivity.this);
+//            tv.setText(s);
+//            eventLinearLayout.addView(tv);
+//        }
 
         //eventText.setMovementMethod(new ScrollingMovementMethod());
         //eventText.setText(s);
