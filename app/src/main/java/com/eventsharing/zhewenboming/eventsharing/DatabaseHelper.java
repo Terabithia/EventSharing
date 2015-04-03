@@ -1,7 +1,7 @@
 package com.eventsharing.zhewenboming.eventsharing;
 import com.eventsharing.zhewenboming.eventsharing.Models.Circle;
 import com.eventsharing.zhewenboming.eventsharing.Models.User;
-import com.eventsharing.zhewenboming.eventsharing.SQLStatements;
+//import com.eventsharing.zhewenboming.eventsharing.SQLStatements;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,11 +15,9 @@ import java.util.List;
 public class DatabaseHelper {
     private static final String DATABASE_NAME = "EvenSharing.db";
 
-
     private Context context;
     private SQLiteDatabase db;
     private SQLiteStatement stmt;
-
 
 
     public DatabaseHelper(Context context) {

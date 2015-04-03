@@ -83,23 +83,23 @@ public class LoginActivity extends Activity implements OnClickListener {
     }
 
     private void loginClick() {
-//        String username = this.userNameEditableField.getText().toString();
-//        String password = this.passwordEditableField.getText().toString();
-//        this.dh = new DatabaseHelper(this);
-//        List<String> users = this.dh.selectAllUsers(username, password);
-//        if (users.size() > 0) {
-//            startActivity(new Intent(this, WelcomeActivity.class));
-//            finish();
-//        } else {
-//            new AlertDialog.Builder(this)
-//                    .setTitle("Error")
-//                    .setMessage("Login failed")
-//                    .setNeutralButton("Try Again",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,
-//                                                    int which) {
-//                                }
-//                            }).show();
-//        }
+        String username = this.userNameEditableField.getText().toString();
+        String password = this.passwordEditableField.getText().toString();
+        this.dh = new DatabaseHelper(this);
+        List<String> users = this.dh.selectAllUsers(username, password);
+        if (users.size() > 0) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Login failed")
+                    .setNeutralButton("Try Again",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                }
+                            }).show();
+        }
     }
 }

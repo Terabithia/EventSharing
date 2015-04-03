@@ -33,32 +33,32 @@ public class AccountActivity extends Activity implements OnClickListener {
     }
 
     private void CreateAccount() {
-//        String username = etUsername.getText().toString();
-//        String password = etPassword.getText().toString();
-//        String confirm = etConfirm.getText().toString();
-//        if ((password.equals(confirm)) && (!username.equals(""))
-//                && (!password.equals("")) && (!confirm.equals(""))) {
-//            this.dh = DatabaseHelper.getInstance(this);
-//            this.dh.insertUser(username, password);
-//            Toast.makeText(AccountActivity.this, "new record inserted",
-//                    Toast.LENGTH_SHORT).show();
-//            finish();
-//        } else if ((username.equals("")) || (password.equals(""))
-//                || (confirm.equals(""))) {
-//            Toast.makeText(AccountActivity.this, "Missing entry", Toast.LENGTH_SHORT)
-//                    .show();
-//        } else if (!password.equals(confirm)) {
-//            new AlertDialog.Builder(this)
-//                    .setTitle("Error")
-//                    .setMessage("passwords do not match")
-//                    .setNeutralButton("Try Again",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog,
-//                                                    int which) {
-//                                }
-//                            })
-//                    .show();
-//        }
+        String username = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
+        String confirm = etConfirm.getText().toString();
+        if ((password.equals(confirm)) && (!username.equals(""))
+                && (!password.equals("")) && (!confirm.equals(""))) {
+            this.dh = new DatabaseHelper(this);
+            this.dh.insertUser(username, password);
+            Toast.makeText(AccountActivity.this, "new record inserted",
+                    Toast.LENGTH_SHORT).show();
+            finish();
+        } else if ((username.equals("")) || (password.equals(""))
+                || (confirm.equals(""))) {
+            Toast.makeText(AccountActivity.this, "Missing entry", Toast.LENGTH_SHORT)
+                    .show();
+        } else if (!password.equals(confirm)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("passwords do not match")
+                    .setNeutralButton("Try Again",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                }
+                            })
+                    .show();
+        }
     }
 
     public void onClick(View v) {
