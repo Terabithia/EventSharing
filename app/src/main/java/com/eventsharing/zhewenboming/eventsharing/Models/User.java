@@ -13,6 +13,7 @@ public class User {
     private int id;
     private List<Integer> circles;
     private List<Integer> friends;
+    private List<Integer> events;
 
     // getters and setters
     public User(String userName, String password){
@@ -20,6 +21,7 @@ public class User {
         _password = password;
         circles = new ArrayList<>();
         friends = new ArrayList<>();
+        events = new ArrayList<>();
     }
 
     public String get_password() {
@@ -64,6 +66,17 @@ public class User {
     public void setFriends(List<Integer> friends) {
         this.friends = friends;
     }
+
+    public List<Integer> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Integer> events) {
+        this.events = events;
+    }
+
+
+    /****************************other methods***********************/
 
 
 }

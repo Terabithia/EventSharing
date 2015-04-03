@@ -1,7 +1,9 @@
 package com.eventsharing.zhewenboming.eventsharing;
 import com.eventsharing.zhewenboming.eventsharing.Models.Circle;
+import com.eventsharing.zhewenboming.eventsharing.Models.Event;
 import com.eventsharing.zhewenboming.eventsharing.Models.User;
 //import com.eventsharing.zhewenboming.eventsharing.SQLStatements;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -77,15 +79,38 @@ public class DatabaseHelper {
         user.setFriends(getFriendsByUserId(id));
         return user;
     }
-    //need implementation
     public List<Integer> getUsersByCircleId(int id){
         List<Integer> users = new ArrayList<>();
+        Cursor cursor = this.db.query(SQLStatements.USER_CIRCLE_TABLE, new String[] { "userId"},"circleId = "+id, null, null, null, "userId desc");
+        if (cursor.moveToFirst()) {
+            do {
+                users.add(cursor.getInt(0));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         return users;
     }
-    //need implementation
     public List<Integer> getFriendsByUserId(int id){
         List<Integer> friends = new ArrayList();
+        Cursor cursor = this.db.query(SQLStatements.FRIEND_TABLE, new String[] { "friendId"},"id = "+id, null, null, null, "friendId desc");
+        if (cursor.moveToFirst()) {
+            do {
+                friends.add(cursor.getInt(0));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         return friends;
+    }
+    public void addFriendById(int userId, int friendId){
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("id", userId);
+        insertValues.put("friendId",friendId);
+        this.db.insert(SQLStatements.FRIEND_TABLE,null,insertValues);
+
     }
 
     /************************Method for circle**********************/
@@ -120,6 +145,44 @@ public class DatabaseHelper {
         c.setUsers(getUsersByCircleId(id));
         return c;
     }
+
+    /*****************Methods for event**************************/
+    public void insertEvent(String title, String des, int ownerId, String location) {
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("title", title);
+        insertValues.put("description", des);
+        insertValues.put("ownerId", ownerId);
+        insertValues.put("location", location);
+        this.db.insert(SQLStatements.FRIEND_TABLE, null, insertValues);
+    }
+    public List<Integer> getEventsByUserId(int id){
+        List<Integer> events = new ArrayList();
+        Cursor cursor = this.db.query(SQLStatements.EVENT_TABLE, new String[] { "id" }, "ownerId = "+ id , null, null, null, "id desc");
+        if (cursor.moveToFirst()) {
+            do {
+                events.add(cursor.getInt(0));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return events;
+    }
+    public void deleteEvent(int id){
+        this.db.delete(SQLStatements.USER_EVENT_TABLE,"eventId = " + id, null);
+        this.db.delete(SQLStatements.EVENT_TABLE,"ownerId = " + id,null);
+    }
+    public Event getEventById(int id){
+        Cursor cursor = this.db.query(SQLStatements.EVENT_TABLE, new String[] { "name","ownerId","description","location" }, "id = "+ id , null, null, null, "name desc");
+        Event e = new Event(cursor.getString(0),cursor.getString(2),cursor.getInt(1),cursor.getString(3));
+        e.setId(id);
+        e.setOwnerId(cursor.getInt(1));
+        e.setDesciption(cursor.getString(2));
+        e.setLocation(cursor.getString(3));
+        return e;
+    }
+
+    /*********Methods for Comments***********************/
 
 
     /************************Method for other**********************/
