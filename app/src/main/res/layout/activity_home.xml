@@ -9,38 +9,85 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/linearLayout">
 
-        <ScrollView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="500px"
-            android:id="@+id/eventScrollView"
-            android:fillViewport="false">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventLinearLayout">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Small Text"
-                    android:id="@+id/textView" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Event"
+                android:id="@+id/eventLabel"
+                android:layout_weight="3" />
 
-                <TextView
-                    android:text="@string/hello_world"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/eventTextVIew" />
-            </LinearLayout>
-        </ScrollView>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Hello"
+                android:id="@+id/helloTextView"
+                android:singleLine="false"
+                android:layout_weight="2" />
+        </LinearLayout>
 
-        <ScrollView
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/eventListView"
+            android:layout_weight="5" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollView" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Circle"
+            android:id="@+id/circleLabel" />
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/circleListView"
+            android:layout_weight="5" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:baselineAligned="false">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="+Event"
+                android:id="@+id/addEventButton"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_weight="3" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="+Circle"
+                android:id="@+id/addCircleButton"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_weight="3" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="LOG OFF"
+                android:id="@+id/logoffButton"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_weight="2" />
+        </LinearLayout>
 
     </LinearLayout>
 

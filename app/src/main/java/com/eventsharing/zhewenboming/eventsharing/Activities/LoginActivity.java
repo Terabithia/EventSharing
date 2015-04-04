@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +23,7 @@ public class LoginActivity extends Activity implements OnClickListener {
     private DatabaseHelper dh;
     private EditText userNameEditableField;
     private EditText passwordEditableField;
-    private final static String OPT_NAME = "name";
+    private final static String USER_NAME = "username";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,11 @@ public class LoginActivity extends Activity implements OnClickListener {
         this.dh = new DatabaseHelper(this);
         List<String> users = this.dh.selectAllUsers(username, password);
         if (users.size() > 0) {
+            SharedPreferences settings = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString(USER_NAME, username);
+            editor.commit();
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         } else {
