@@ -29,6 +29,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private final static String USER_NAME = "username";
     private final static String USER_ID = "userID";
     private DatabaseHelper dh;
+    User myUser;
+    String userID;
     LinearLayout eventLinearLayout;
     ListView eventListView;
     ListView circleListView;
@@ -53,6 +55,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         TextView helloTextView = (TextView)findViewById(R.id.helloTextView);
         helloTextView.setText("Hi, " + username);
 
+        //myUser = this.dh.getUserByName(username);
         eventListView = (ListView) findViewById(R.id.eventListView);
         circleListView = (ListView) findViewById(R.id.circleListView);
         loadContent();
@@ -73,6 +76,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
         }
     }
+
+    private void getAllEvents(){
+        //myUser.getFriends();
+    }
+
     private void loadContent() {
         this.dh = new DatabaseHelper(this);
 
@@ -97,7 +105,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //            tv.setText(userName);
 //            eventLinearLayout.addView(tv);
 //        }
-        eventList = Arrays.asList("Shopping - Mom");
+        eventList = Arrays.asList("Gym - Sean", "Shopping - Mom", "Running - Mike", "Snowboarding - Sam");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventList);
         eventListView.setAdapter(adapter);
 //        for(int i = 0; i< 20; i++) {
@@ -122,7 +130,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //            //eventListView.addFooterView(tv);
 //        }
         adapter.notifyDataSetChanged();
-        adapter.add("Test!");
         AdapterView.OnItemClickListener eventItemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
