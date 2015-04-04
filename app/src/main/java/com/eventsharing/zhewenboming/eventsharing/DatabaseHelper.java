@@ -71,11 +71,22 @@ public class DatabaseHelper {
         return list;
     }
     public User getUserById(int id){
+        User user = new User("","");
         Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name","password" }, "id = "+ id , null, null, null, "name desc");
-        User user = new User(cursor.getString(0),cursor.getString(1));
-        user.setId(id);
-        user.setCircle(getCirclesByUserId(id));
-        user.setFriends(getFriendsByUserId(id));
+        if (cursor.moveToFirst()) {
+            do {
+
+                user = new User(cursor.getString(0),cursor.getString(1));
+                user.setId(id);
+                user.setCircle(getCirclesByUserId(id));
+                user.setFriends(getFriendsByUserId(id));
+
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
         return user;
     }
     public List<Integer> getUsersByCircleId(int id){
@@ -112,11 +123,22 @@ public class DatabaseHelper {
 
     }
     public User getUserByName(String name){
+        User user = new User("","");
         Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "id", "name","password" }, "name = "+ name , null, null, null, "name desc");
-        User user = new User(cursor.getString(1),cursor.getString(2));
-        user.setId(cursor.getInt(0));
-        user.setCircle(getCirclesByUserId(cursor.getInt(0)));
-        user.setFriends(getFriendsByUserId(cursor.getInt(0)));
+        if (cursor.moveToFirst()) {
+            do {
+
+                user = new User(cursor.getString(1),cursor.getString(2));
+                user.setId(cursor.getInt(0));
+                user.setCircle(getCirclesByUserId(cursor.getInt(0)));
+                user.setFriends(getFriendsByUserId(cursor.getInt(0)));
+
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
         return user;
     }
     /************************Method for circle**********************/
