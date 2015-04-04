@@ -37,6 +37,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     LinearLayout circleLinearLayout;
     List<String> eventList;
     List<String> circleList;
+    List<User> myFriends;
+    List<Event> allEvents;
+    List<Integer> myFriendsID;
+
 
     public static String clickedEvent;
     @Override
@@ -50,14 +54,30 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         View logoffButton = findViewById(R.id.logoffButton);
         logoffButton.setOnClickListener(this);
 
+        this.dh = new DatabaseHelper(this);
+
         String username = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(USER_NAME, "");
         TextView helloTextView = (TextView)findViewById(R.id.helloTextView);
         helloTextView.setText("Hi, " + username);
 
-        //myUser = this.dh.getUserByName(username);
+//        for(int i = 0; i< 100; i++) {
+//            String userName = "user" + String.valueOf(i);
+//            this.dh.insertUser(userName, "1");
+//            List<String> allUsers= this.dh.selectAllUsers(userName, "1");
+//            if(allUsers.size()>0){
+//                TextView tv = new TextView(HomeActivity.this);
+//                tv.setText(userName);
+//            }
+//        }
+
+        List<User> us = this.dh.getAllUser();
+        myUser = this.dh.getUserById(1);
+        //myUser = this.dh.getUserByName("James");
+        //myFriendsID =  myUser.getFriends();
         eventListView = (ListView) findViewById(R.id.eventListView);
         circleListView = (ListView) findViewById(R.id.circleListView);
+        //getAllFriends();
         loadContent();
     }
 
@@ -77,26 +97,30 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
-    private void getAllEvents(){
-        //myUser.getFriends();
+    private void getAllFriends(){
+        for (Integer id : myFriendsID){
+            User user = this.dh.getUserById(id);
+            myFriends.add(user);
+        }
+    }
+
+    private void getAllEvent(){
+        for (Integer id : myFriendsID){
+            List<Integer> userEventIds = this.dh.getEventsByUserId(id);
+            for (Integer eventId : userEventIds){
+                allEvents.add(this.dh.getEventById(eventId));
+            }
+        }
     }
 
     private void loadContent() {
-        this.dh = new DatabaseHelper(this);
 
 
 
 
 
-//        for(int i = 0; i< 100; i++) {
-//            String userName = "user" + String.valueOf(i);
-//            this.dh.insertUser(userName, "1");
-//            List<String> allUsers= this.dh.selectAllUsers(userName, "1");
-//            if(allUsers.size()>0){
-//                TextView tv = new TextView(HomeActivity.this);
-//                tv.setText(userName);
-//            }
-//        }
+
+
 
 //        List<User> allUsers= this.dh.getAllUser();
 //        for (User u: allUsers) {
@@ -105,7 +129,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //            tv.setText(userName);
 //            eventLinearLayout.addView(tv);
 //        }
+
         eventList = Arrays.asList("Gym - Sean", "Shopping - Mom", "Running - Mike", "Snowboarding - Sam");
+//        for (Event e:allEvents){
+//            eventList.add(e.getTitle());
+//        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventList);
         eventListView.setAdapter(adapter);
 //        for(int i = 0; i< 20; i++) {
