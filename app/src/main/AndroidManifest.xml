@@ -6,6 +6,60 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" ></application>
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Activities.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:label="Login Page"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".Activities.AccountActivity"
+            android:label="Account Page"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.EventActivity"
+            android:label="@string/title_activity_event"
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eventsharing.zhewenboming.eventsharing.Activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".Activities.CircleActivity"
+            android:label="@string/title_activity_circle"
+            android:parentActivityName=".Activities.HomeActivity"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eventsharing.zhewenboming.eventsharing.Activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".Activities.EventAddActivity"
+            android:label="@string/title_activity_event_add"
+            android:parentActivityName=".Activities.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eventsharing.zhewenboming.eventsharing.Activities.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".Activities.CircleAddActivity"
+            android:label="@string/title_activity_circle_add"
+            android:parentActivityName=".Activities.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eventsharing.zhewenboming.eventsharing.Activities.HomeActivity" />
+        </activity>
+    </application>
 
 </manifest>
