@@ -42,11 +42,10 @@ public class DatabaseHelper {
     }
     public List<String> selectAllUsers(String username, String password) {
         List<String> list = new ArrayList<String>();
-        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name", "password" }, "name = '"+ username +"' AND password= '"+ password+"'", null, null, null, "name desc");
+        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "name" }, "name = '"+ username +"' AND password= '"+ password+"'", null, null, null, "name desc");
         if (cursor.moveToFirst()) {
             do {
                 list.add(cursor.getString(0));
-                list.add(cursor.getString(1));
             } while (cursor.moveToNext());
         }
         if (cursor != null && !cursor.isClosed()) {
@@ -112,7 +111,14 @@ public class DatabaseHelper {
         this.db.insert(SQLStatements.FRIEND_TABLE,null,insertValues);
 
     }
-
+    public User getUserByName(String name){
+        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "id", "name","password" }, "name = "+ name , null, null, null, "name desc");
+        User user = new User(cursor.getString(1),cursor.getString(2));
+        user.setId(cursor.getInt(0));
+        user.setCircle(getCirclesByUserId(cursor.getInt(0)));
+        user.setFriends(getFriendsByUserId(cursor.getInt(0)));
+        return user;
+    }
     /************************Method for circle**********************/
     public long insertCircle(String name, String ownerId) {
         this.stmt = this.db.compileStatement(SQLStatements.INSERT_CIRCLE);
