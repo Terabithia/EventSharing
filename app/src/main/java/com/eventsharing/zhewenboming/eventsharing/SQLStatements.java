@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Zhewen on 4/1/2015.
  */
 public class SQLStatements {
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
 
     //all table names
     public static final String CIRCLE_TABLE = "Circles";
@@ -27,7 +27,7 @@ public class SQLStatements {
     public static final String CREATE_USER_CIRCLE_TABLE = "CREATE TABLE " + USER_CIRCLE_TABLE + "(id INTEGER PRIMARY KEY,circleId Integer, userId INTEGER)";
     public static final String CREATE_USER_EVENT_TABLE = "CREATE TABLE " + USER_EVENT_TABLE + "(id INTEGER PRIMARY KEY,eventId Integer, userId INTEGER )";
     public static final String CREATE_EVENT_COMMENT_TABLE = "CREATE TABLE " + EVENT_COMMENT_TABLE + "(id INTEGER PRIMARY KEY,commentId Integer, eventId INTEGER)";
-    public static final String CREATE_FRIEND_TABLE = "CREATE TABLE " + FRIEND_TABLE + "(id INTEGER ,friendId Integer, primary key(id, friendId))";
+    public static final String CREATE_FRIEND_TABLE = "CREATE TABLE " + FRIEND_TABLE + "(id INTEGER PRIMARY KEY,userId Integer, friendId Integer)";
 
     //all sql queries
     public static final String INSERT_USER = "insert into " + USER_TABLE + "(name, password) values (?, ?)" ;

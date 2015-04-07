@@ -104,7 +104,7 @@ public class DatabaseHelper {
     }
     public List<Integer> getFriendsByUserId(int id){
         List<Integer> friends = new ArrayList();
-        Cursor cursor = this.db.query(SQLStatements.FRIEND_TABLE, new String[] { "friendId"},"id = "+id, null, null, null, "friendId desc");
+        Cursor cursor = this.db.query(SQLStatements.FRIEND_TABLE, new String[] { "friendId"},"userId = " + id, null, null, null, "friendId desc");
         if (cursor.moveToFirst()) {
             do {
                 friends.add(cursor.getInt(0));
@@ -117,14 +117,14 @@ public class DatabaseHelper {
     }
     public void addFriendById(int userId, int friendId){
         ContentValues insertValues = new ContentValues();
-        insertValues.put("id", userId);
+        insertValues.put("userId", userId);
         insertValues.put("friendId",friendId);
         this.db.insert(SQLStatements.FRIEND_TABLE,null,insertValues);
 
     }
     public User getUserByName(String name){
         User user = new User("","");
-        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "id", "name","password" }, "name = "+ name , null, null, null, "name desc");
+        Cursor cursor = this.db.query(SQLStatements.USER_TABLE, new String[] { "id", "name","password" }, "name = "+ "'" + name + "'", null, null, null, "name desc");
         if (cursor.moveToFirst()) {
             do {
 
@@ -132,7 +132,7 @@ public class DatabaseHelper {
                 user.setId(cursor.getInt(0));
                 user.setCircle(getCirclesByUserId(cursor.getInt(0)));
                 user.setFriends(getFriendsByUserId(cursor.getInt(0)));
-
+                user.setEvents(getEventsByUserId(cursor.getInt(0)));
             } while (cursor.moveToNext());
         }
         if (cursor != null && !cursor.isClosed()) {
@@ -142,11 +142,15 @@ public class DatabaseHelper {
         return user;
     }
     /************************Method for circle**********************/
-    public long insertCircle(String name, String ownerId) {
-        this.stmt = this.db.compileStatement(SQLStatements.INSERT_CIRCLE);
-        this.stmt.bindString(1, name);
-        this.stmt.bindString(2, ownerId);
-        return this.stmt.executeInsert();
+    public void insertCircle(String name, int ownerId) {
+//        this.stmt = this.db.compileStatement(SQLStatements.INSERT_CIRCLE);
+//        this.stmt.bindString(1, name);
+//        this.stmt.bindString(2, ownerId);
+//        return this.stmt.executeInsert();
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("name", name);
+        insertValues.put("ownerId", ownerId);
+        this.db.insert(SQLStatements.CIRCLE_TABLE, null, insertValues);
     }
     public List<Integer> getCirclesByUserId(int id){
         List<Integer> circles = new ArrayList();
@@ -167,11 +171,21 @@ public class DatabaseHelper {
     }
     public Circle getCircleById(int id){
         Cursor cursor = this.db.query(SQLStatements.CIRCLE_TABLE, new String[] { "name","ownerId" }, "id = "+ id , null, null, null, "name desc");
-        Circle c = new Circle(cursor.getString(0));
-        c.setId(id);
-        c.setOwnerId(cursor.getInt(1));
-        c.setUsers(getUsersByCircleId(id));
+        Circle c = null;
+        if (cursor.moveToFirst()){
+            c = new Circle(cursor.getString(0));
+            c.setId(id);
+            c.setOwnerId(cursor.getInt(1));
+            c.setUsers(getUsersByCircleId(id));
+        }
         return c;
+    }
+
+    public void addUserToCircle(int circleId, int userId){
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("circleId", circleId);
+        insertValues.put("userId", userId);
+        this.db.insert(SQLStatements.USER_CIRCLE_TABLE, null, insertValues);
     }
 
     /*****************Methods for event**************************/
@@ -181,7 +195,7 @@ public class DatabaseHelper {
         insertValues.put("description", des);
         insertValues.put("ownerId", ownerId);
         insertValues.put("location", location);
-        this.db.insert(SQLStatements.FRIEND_TABLE, null, insertValues);
+        this.db.insert(SQLStatements.EVENT_TABLE, null, insertValues);
     }
     public List<Integer> getEventsByUserId(int id){
         List<Integer> events = new ArrayList();
@@ -201,12 +215,12 @@ public class DatabaseHelper {
         this.db.delete(SQLStatements.EVENT_TABLE,"ownerId = " + id,null);
     }
     public Event getEventById(int id){
-        Cursor cursor = this.db.query(SQLStatements.EVENT_TABLE, new String[] { "name","ownerId","description","location" }, "id = "+ id , null, null, null, "name desc");
-        Event e = new Event(cursor.getString(0),cursor.getString(2),cursor.getInt(1),cursor.getString(3));
+        Cursor cursor = this.db.query(SQLStatements.EVENT_TABLE, new String[] { "title","description","ownerId","location" }, "id = "+ id , null, null, null, "title desc");
+        Event e = null;
+        if(cursor.moveToFirst()){
+            e = new Event(cursor.getString(0),cursor.getString(1),cursor.getInt(2),cursor.getString(3));
+        }
         e.setId(id);
-        e.setOwnerId(cursor.getInt(1));
-        e.setDesciption(cursor.getString(2));
-        e.setLocation(cursor.getString(3));
         return e;
     }
 

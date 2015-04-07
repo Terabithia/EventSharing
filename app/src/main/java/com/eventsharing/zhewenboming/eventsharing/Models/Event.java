@@ -1,5 +1,7 @@
 package com.eventsharing.zhewenboming.eventsharing.Models;
 
+import java.util.List;
+
 /**
  * Created by Zhewen on 4/1/2015.
  */
@@ -9,6 +11,7 @@ public class Event {
     private String desciption;
     private int ownerId;
     private String location;
+    private List<Integer> comments;
 
     public Event(String t, String d, int oId, String location){
         this.title = t;
@@ -59,5 +62,7 @@ public class Event {
         this.location = location;
     }
 
+    public List<Integer> getCommentId() {return comments; }
 
+    public void setComments(List<Integer> comments) {this.comments = comments; }
 }

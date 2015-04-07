@@ -11,7 +11,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eventsharing.zhewenboming.eventsharing.DatabaseHelper;
+import com.eventsharing.zhewenboming.eventsharing.Models.User;
 import com.eventsharing.zhewenboming.eventsharing.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AccountActivity extends Activity implements OnClickListener {
     private EditText etUsername;
@@ -40,6 +45,11 @@ public class AccountActivity extends Activity implements OnClickListener {
                 && (!password.equals("")) && (!confirm.equals(""))) {
             this.dh = new DatabaseHelper(this);
             this.dh.insertUser(username, password);
+            User myUser = this.dh.getUserByName(username);
+            List<Integer> friendList = new ArrayList<Integer>();
+            friendList.add(myUser.getId());
+            myUser.setFriends(friendList);
+            this.dh.addFriendById(myUser.getId(),myUser.getId());
             Toast.makeText(AccountActivity.this, "new record inserted",
                     Toast.LENGTH_SHORT).show();
             finish();

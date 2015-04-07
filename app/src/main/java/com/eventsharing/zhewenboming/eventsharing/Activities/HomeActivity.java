@@ -11,11 +11,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.view.View.OnClickListener;
 
 import com.eventsharing.zhewenboming.eventsharing.DatabaseHelper;
+import com.eventsharing.zhewenboming.eventsharing.Models.Circle;
 import com.eventsharing.zhewenboming.eventsharing.Models.Event;
 import com.eventsharing.zhewenboming.eventsharing.Models.User;
 import com.eventsharing.zhewenboming.eventsharing.R;
@@ -24,22 +27,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HomeActivity extends ActionBarActivity implements View.OnClickListener {
+public class HomeActivity extends ActionBarActivity implements OnClickListener {
 
     private final static String USER_NAME = "username";
     private final static String USER_ID = "userID";
+    private final static String Event_ID = "eventID";
+    private final static String Circle_ID = "circleID";
+    public static int clickedEventID;
+    public static int clickedCircleID;
     private DatabaseHelper dh;
     User myUser;
     String userID;
-    LinearLayout eventLinearLayout;
+
     ListView eventListView;
     ListView circleListView;
+    LinearLayout eventLinearLayout;
     LinearLayout circleLinearLayout;
+
     List<String> eventList;
     List<String> circleList;
-    List<User> myFriends;
-    List<Event> allEvents;
     List<Integer> myFriendsID;
+    List<Event> allEvents;
+    List<Circle> allCircles;
+
 
 
     public static String clickedEvent;
@@ -56,28 +66,31 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         this.dh = new DatabaseHelper(this);
 
+        //greeting with name
         String username = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(USER_NAME, "");
         TextView helloTextView = (TextView)findViewById(R.id.helloTextView);
+        myUser = this.dh.getUserByName(username);
         helloTextView.setText("Hi, " + username);
+        //save my user id
+        SharedPreferences settings = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(USER_ID, myUser.getId());
+        editor.commit();
 
-//        for(int i = 0; i< 100; i++) {
-//            String userName = "user" + String.valueOf(i);
-//            this.dh.insertUser(userName, "1");
-//            List<String> allUsers= this.dh.selectAllUsers(userName, "1");
-//            if(allUsers.size()>0){
-//                TextView tv = new TextView(HomeActivity.this);
-//                tv.setText(userName);
-//            }
-//        }
+        allEvents = new ArrayList<Event>();
+        allCircles = new ArrayList<Circle>();
+        eventList = new ArrayList<String>();
+        circleList = new ArrayList<String>();
 
-        List<User> us = this.dh.getAllUser();
-        myUser = this.dh.getUserById(1);
-        //myUser = this.dh.getUserByName("James");
-        //myFriendsID =  myUser.getFriends();
+
+        myFriendsID =  myUser.getFriends();
+        getAllEvent();
+        getAllCircle();
         eventListView = (ListView) findViewById(R.id.eventListView);
+
         circleListView = (ListView) findViewById(R.id.circleListView);
-        //getAllFriends();
         loadContent();
     }
 
@@ -85,22 +98,17 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         switch(v.getId())
         {
             case R.id.addEventButton:
+                finish();
                 startActivity(new Intent(this, EventAddActivity.class));
                 break;
             case R.id.addCircleButton:
+                finish();
                 startActivity(new Intent(this, CircleAddActivity.class));
                 break;
             case R.id.logoffButton:
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
-        }
-    }
-
-    private void getAllFriends(){
-        for (Integer id : myFriendsID){
-            User user = this.dh.getUserById(id);
-            myFriends.add(user);
         }
     }
 
@@ -113,15 +121,31 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         }
     }
 
+    private void getAllCircle(){
+        List<Integer> myCircleIDs = this.dh.getCirclesByUserId(myUser.getId());
+        for (Integer id : myCircleIDs){
+            allCircles.add(this.dh.getCircleById(id));
+        }
+    }
+
     private void loadContent() {
+        AdapterView.OnItemClickListener eventItemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clickedEventID = allEvents.get(position).getId();
+                //clickedEvent = ((TextView)view).getText().toString();
+                startActivity(new Intent(HomeActivity.this,EventActivity.class));
+            }
+        };
 
-
-
-
-
-
-
-
+        AdapterView.OnItemClickListener circleItemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //clickedEvent = ((TextView)view).getText().toString();
+                clickedCircleID = allCircles.get(position).getId();
+                startActivity(new Intent(HomeActivity.this,CircleActivity.class));
+            }
+        };
 //        List<User> allUsers= this.dh.getAllUser();
 //        for (User u: allUsers) {
 //            String userName = u.get_userName();
@@ -129,12 +153,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //            tv.setText(userName);
 //            eventLinearLayout.addView(tv);
 //        }
-
-        eventList = Arrays.asList("Gym - Sean", "Shopping - Mom", "Running - Mike", "Snowboarding - Sam");
-//        for (Event e:allEvents){
-//            eventList.add(e.getTitle());
-//        }
-
+        //eventList = Arrays.asList("Gym - Sean", "Shopping - Mom", "Running - Mike", "Snowboarding - Sam");
+        for (Event e:allEvents){
+            User u = this.dh.getUserById(e.getOwnerId());
+            eventList.add(e.getTitle() + " - " + u.get_userName());
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventList);
         eventListView.setAdapter(adapter);
 //        for(int i = 0; i< 20; i++) {
@@ -159,41 +182,15 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //            //eventListView.addFooterView(tv);
 //        }
         adapter.notifyDataSetChanged();
-        AdapterView.OnItemClickListener eventItemClickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                clickedEvent = ((TextView)view).getText().toString();
-                startActivity(new Intent(HomeActivity.this,EventActivity.class));
-            }
-        };
 
-        AdapterView.OnItemClickListener circleItemClickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                clickedEvent = ((TextView)view).getText().toString();
-                startActivity(new Intent(HomeActivity.this,CircleActivity.class));
-            }
-        };
         eventListView.setOnItemClickListener(eventItemClickListener);
 
-        circleList = Arrays.asList("Friends", "Family", "co-Worker", "School", "Special");
+        for (Circle c : allCircles){
+            circleList.add(c.get_name());
+        }
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, circleList);
         circleListView.setAdapter(adapter2);
         adapter2.notifyDataSetChanged();
         circleListView.setOnItemClickListener(circleItemClickListener);
-
-
-//        for(int i = 0; i< 20; i++) {
-//            String s = "Circle " + String.valueOf(i);
-//            TextView tv = new TextView(this);
-//            tv.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    startActivity(new Intent(HomeActivity.this,CircleActivity.class));
-//                }
-//            });
-//            tv.setText(s);
-//            circleLinearLayout.addView(tv);
-//        }
     }
 }

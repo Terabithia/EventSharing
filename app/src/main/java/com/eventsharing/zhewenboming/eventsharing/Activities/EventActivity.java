@@ -1,56 +1,71 @@
 package com.eventsharing.zhewenboming.eventsharing.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.eventsharing.zhewenboming.eventsharing.DatabaseHelper;
+import com.eventsharing.zhewenboming.eventsharing.Models.Comment;
+import com.eventsharing.zhewenboming.eventsharing.Models.Event;
+import com.eventsharing.zhewenboming.eventsharing.Models.User;
 import com.eventsharing.zhewenboming.eventsharing.R;
 
 import org.w3c.dom.Text;
 
-public class EventActivity extends ActionBarActivity {
+import java.util.List;
 
+public class EventActivity extends ActionBarActivity implements OnClickListener {
+
+    private DatabaseHelper dh;
+    int clickEventID;
+    Event thisEvent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        TextView tv = (TextView) findViewById(R.id.eventTitleText);
-        tv.setText(HomeActivity.clickedEvent);
-        LinearLayout eventLayout = (LinearLayout) findViewById(R.id.eventPageLinearLayout);
 
-        for(int i = 0; i< 100; i++) {
-            String s = "Event " + String.valueOf(i);
-            TextView tvE = new TextView(this);
-            tvE.setText(s);
-            eventLayout.addView(tvE);
+        this.dh = new DatabaseHelper(this);
+        LinearLayout eventLayout = (LinearLayout) findViewById(R.id.eventPageLinearLayout);
+        clickEventID = HomeActivity.clickedEventID;
+        thisEvent = this.dh.getEventById(clickEventID);
+        Button eventComBtn = (Button) findViewById(R.id.eventComBtn);
+        eventComBtn.setOnClickListener(this);
+        Button eventComCancelBtn = (Button) findViewById((R.id.eventComCancelBtn));
+        eventComCancelBtn.setOnClickListener(this);
+
+        TextView titleString = (TextView) findViewById(R.id.eventTitleViewText);
+        User user = this.dh.getUserById(thisEvent.getOwnerId());
+        titleString.setText(thisEvent.getTitle() + " - " + user.get_userName());
+        TextView desString = (TextView) findViewById(R.id.eventDesViewText);
+        desString.setText(thisEvent.getDesciption());
+
+        LinearLayout commentLayout = (LinearLayout) findViewById(R.id.eventCommentLinearLayout);
+        List<Integer> allCommentIds = thisEvent.getCommentId();
+
+    }
+
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.eventComBtn:
+                addComment();
+                finish();
+                break;
+            case R.id.eventComCancelBtn:
+                finish();
+                break;
         }
     }
 
+    private void addComment(){
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_event, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    }
+
 }
