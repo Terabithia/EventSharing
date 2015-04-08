@@ -1,5 +1,6 @@
 package com.eventsharing.zhewenboming.eventsharing;
 import com.eventsharing.zhewenboming.eventsharing.Models.Circle;
+import com.eventsharing.zhewenboming.eventsharing.Models.Comment;
 import com.eventsharing.zhewenboming.eventsharing.Models.Event;
 import com.eventsharing.zhewenboming.eventsharing.Models.User;
 //import com.eventsharing.zhewenboming.eventsharing.SQLStatements;
@@ -225,7 +226,37 @@ public class DatabaseHelper {
     }
 
     /*********Methods for Comments***********************/
+    public void insertComment(int eventId, String text, int userId) {
+        ContentValues insertValues = new ContentValues();
+        insertValues.put("eventId", eventId);
+        insertValues.put("content", text);
+        insertValues.put("userId", userId);
+        this.db.insert(SQLStatements.COMMENTS_TABLE, null, insertValues);
+    }
 
+    public Comment getCommentById(int id){
+        Cursor cursor = this.db.query(SQLStatements.COMMENTS_TABLE, new String[] { "eventId","content","userId"}, "id = "+ id , null, null, null, "eventId desc");
+        Comment c = null;
+        if(cursor.moveToFirst()){
+            c = new Comment(cursor.getInt(2),cursor.getInt(0),cursor.getString(1));
+        }
+        c.setId(id);
+        return c;
+    }
+
+    public List<Integer> getCommentsByEventId(int id){
+        List<Integer> comments = new ArrayList();
+        Cursor cursor = this.db.query(SQLStatements.COMMENTS_TABLE, new String[] { "id" }, "eventId = "+ id , null, null, null, "id desc");
+        if (cursor.moveToFirst()) {
+            do {
+                comments.add(cursor.getInt(0));
+            } while (cursor.moveToNext());
+        }
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+        return comments;
+    }
 
     /************************Method for other**********************/
     private static class EvenSharingOpenHelper extends SQLiteOpenHelper {

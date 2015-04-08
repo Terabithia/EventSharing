@@ -21,6 +21,7 @@ import com.eventsharing.zhewenboming.eventsharing.Models.Event;
 import com.eventsharing.zhewenboming.eventsharing.Models.User;
 import com.eventsharing.zhewenboming.eventsharing.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventAddActivity extends ActionBarActivity implements OnClickListener {
@@ -43,12 +44,15 @@ public class EventAddActivity extends ActionBarActivity implements OnClickListen
         myUser = this.dh.getUserById(myID);
         eventAddTitleEdit = (EditText) findViewById(R.id.eventTitleEditText);
         eventAddDesEdit = (EditText) findViewById(R.id.eventDesEditText);
+        View btnAddLocation = (Button) findViewById(R.id.eventAddLocationBtn);
+        btnAddLocation.setOnClickListener(this);
         View btnEventAdd = (Button) findViewById(R.id.addEventSaveBtn);
         btnEventAdd.setOnClickListener(this);
         View btnEventCancel = (Button) findViewById(R.id.addEventCancelBtn);
         btnEventCancel.setOnClickListener(this);
         LinearLayout circleListLayout = (LinearLayout) findViewById(R.id.eventCircleListLayout);
         circleIDs = this.dh.getCirclesByUserId(myUser.getId());
+        checkBoxList = new ArrayList<CheckBox>();
         for (Integer id : circleIDs){
             CheckBox cb = new CheckBox(getApplicationContext());
             Circle c = this.dh.getCircleById(id);
@@ -61,6 +65,9 @@ public class EventAddActivity extends ActionBarActivity implements OnClickListen
 
     public void onClick(View v){
         switch (v.getId()){
+            case R.id.eventAddLocationBtn:
+                startActivity(new Intent(this, MapsActivity.class));
+                break;
             case R.id.addEventSaveBtn:
 
                 addEvent();

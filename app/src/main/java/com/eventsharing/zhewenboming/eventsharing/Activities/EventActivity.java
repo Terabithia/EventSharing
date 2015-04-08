@@ -2,6 +2,7 @@ package com.eventsharing.zhewenboming.eventsharing.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,8 +27,10 @@ import java.util.List;
 public class EventActivity extends ActionBarActivity implements OnClickListener {
 
     private DatabaseHelper dh;
+    private final static String USER_ID = "userID";
     int clickEventID;
     Event thisEvent;
+    private EditText commentEdit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +50,17 @@ public class EventActivity extends ActionBarActivity implements OnClickListener 
         titleString.setText(thisEvent.getTitle() + " - " + user.get_userName());
         TextView desString = (TextView) findViewById(R.id.eventDesViewText);
         desString.setText(thisEvent.getDesciption());
+        commentEdit = (EditText) findViewById(R.id.commentTextEdit);
 
         LinearLayout commentLayout = (LinearLayout) findViewById(R.id.eventCommentLinearLayout);
-        List<Integer> allCommentIds = thisEvent.getCommentId();
-
+        List<Integer> allCommentIds = this.dh.getCommentsByEventId(clickEventID);
+        for (Integer cId : allCommentIds){
+            TextView tv = new TextView(this);
+            Comment c = this.dh.getCommentById(cId);
+            User u = this.dh.getUserById(c.getUserId());
+            tv.setText(u.get_userName() + ": " + c.getContent());
+            commentLayout.addView(tv);
+        }
     }
 
     public void onClick(View v){
@@ -65,7 +76,10 @@ public class EventActivity extends ActionBarActivity implements OnClickListener 
     }
 
     private void addComment(){
-
+        String text = commentEdit.getText().toString();
+        int myID = PreferenceManager.getDefaultSharedPreferences(this)
+                .getInt(USER_ID, 0);
+        this.dh.insertComment(clickEventID,text,myID);
     }
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Zhewen on 4/1/2015.
  */
 public class SQLStatements {
-    public static final int DATABASE_VERSION = 12;
+    public static final int DATABASE_VERSION = 13;
 
     //all table names
     public static final String CIRCLE_TABLE = "Circles";

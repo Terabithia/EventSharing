@@ -51,6 +51,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/eventDesEditText" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Location"
+                android:id="@+id/eventAddLocationBtn" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
