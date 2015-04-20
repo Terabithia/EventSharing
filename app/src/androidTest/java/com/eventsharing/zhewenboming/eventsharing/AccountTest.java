@@ -1,6 +1,8 @@
 package com.eventsharing.zhewenboming.eventsharing;
 
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.eventsharing.zhewenboming.eventsharing.Activities.AccountActivity;
 import com.eventsharing.zhewenboming.eventsharing.Activities.LoginActivity;
 import com.robotium.solo.Solo;
 
@@ -8,10 +10,10 @@ import com.robotium.solo.Solo;
  * Created by Terabithia on 2015/4/17.
  */
 
-public class EventSharingTest extends ActivityInstrumentationTestCase2<LoginActivity> {
+public class AccountTest extends ActivityInstrumentationTestCase2<AccountActivity> {
 
-    public EventSharingTest() {
-        super(LoginActivity.class);
+    public AccountTest() {
+        super(AccountActivity.class);
     }
     private Solo solo;
 
@@ -27,10 +29,8 @@ public class EventSharingTest extends ActivityInstrumentationTestCase2<LoginActi
         super.tearDown();
     }
 
-    public void testLoginActivity() throws Exception {
+    public void testAccountActivity() throws Exception {
         // check that we have the right activity
-        solo.assertCurrentActivity("wrong activity", LoginActivity.class);
-
+        //solo.assertCurrentActivity("wrong activity", AccountActivity.class);
     }
 }
-
